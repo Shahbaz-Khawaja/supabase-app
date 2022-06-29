@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-function Appbar() {
+const Appbar = () => {
   return (
     <AppBar>
       <Toolbar>
@@ -9,6 +9,6 @@ function Appbar() {
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default Appbar;
