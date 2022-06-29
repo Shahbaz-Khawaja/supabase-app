@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography } from "@mui/material";
 
 const Appbar = () => {
   return (
-    <AppBar>
+    <AppBar position="static">
       <Toolbar>
         <Typography>Supabase App</Typography>
       </Toolbar>
