@@ -1,7 +1,8 @@
 import React from "react";
-import { useStyles, style } from "views/login/LoginPage.style";
+import { useStyles } from "views/login/LoginPage.style";
 import LoginInputForm from "components/Forms/LoginInputForm/LoginInputForm";
-import { Typography, Link } from "@mui/material";
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { REGISTRATION_URL } from "utils/constants/constants";
 
 const LoginPage = () => {
@@ -21,7 +22,8 @@ const LoginPage = () => {
           <Typography variant="body2" sx={{ mr: "6px" }}>
             Don&apos;t have an account?
           </Typography>
-          <Link href={REGISTRATION_URL} underline="none" sx={{ ...style.link }}>
+
+          <Link to={REGISTRATION_URL} className={classes.link}>
             Create Account
           </Link>
         </div>

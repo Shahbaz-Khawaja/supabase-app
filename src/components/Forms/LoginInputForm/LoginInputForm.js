@@ -7,7 +7,6 @@ import {
   FormControlLabel,
   Checkbox,
   Typography,
-  Link,
   Divider,
   Box,
 } from "@mui/material";
@@ -15,6 +14,7 @@ import {
   useStyles,
   style,
 } from "components/Forms/LoginInputForm/LoginInputForm.style";
+import { Link } from "react-router-dom";
 import CustomTextField from "components/CustomTextField/CustomTextField";
 import { PASSWORD_RECOVERY_URL } from "utils/constants/constants";
 
@@ -66,11 +66,7 @@ const LoginInputForm = () => {
             />
 
             <div className={classes.forgotPassword}>
-              <Link
-                href={PASSWORD_RECOVERY_URL}
-                underline="none"
-                sx={{ ...style.label }}
-              >
+              <Link to={PASSWORD_RECOVERY_URL} className={classes.link}>
                 Forgot password?
               </Link>
             </div>
