@@ -73,7 +73,7 @@ const SignUpForm = () => {
           <div className={classes.terms}>
             <div className={classes.action}>
               <FormControlLabel
-                control={<Checkbox sx={{ color: "#EEEFEF" }} />}
+                control={<Checkbox checked={true} sx={{ color: "#EEEFEF" }} />}
                 label={
                   <div className={classes.action}>
                     <Typography variant="body2" sx={{ mr: "6px" }}>
@@ -88,7 +88,7 @@ const SignUpForm = () => {
             </div>
             <div className={classes.action}>
               <FormControlLabel
-                control={<Checkbox sx={{ color: "#EEEFEF" }} />}
+                control={<Checkbox checked={true} sx={{ color: "#EEEFEF" }} />}
                 label={
                   <Typography variant="body2">
                     Subscribe to the newsletter to stay up to date

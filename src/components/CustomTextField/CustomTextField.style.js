@@ -1,11 +1,5 @@
 import { makeStyles } from "@mui/styles";
 
-export const useHelperTextStyles = makeStyles(() => ({
-  root: {
-    color: "green",
-  },
-}));
-
 export const useStyles = makeStyles({
   field: {
     display: "flex",
