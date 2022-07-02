@@ -10,7 +10,7 @@ const SignUpPage = () => {
   return (
     <div className={classes.mainContent}>
       <Typography variant="h1">Create Account</Typography>
-      <Typography variant="h5">
+      <Typography variant="h6">
         Creating an account is free of charge and no credit card information
         will be needed.
       </Typography>

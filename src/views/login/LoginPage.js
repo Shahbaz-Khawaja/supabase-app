@@ -11,7 +11,7 @@ const LoginPage = () => {
     <>
       <div className={classes.loginContent}>
         <Typography variant="h1">Log in</Typography>
-        <Typography variant="h5" sx={{ mt: "1rem" }}>
+        <Typography variant="h6" sx={{ mt: "1rem" }}>
           Welcome to the jetic platform, please enter your login credentials
           below to start using the application
         </Typography>

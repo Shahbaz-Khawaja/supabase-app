@@ -22,12 +22,7 @@ const CarouselSlider = () => {
           <img height="220px" width="310px" src={img1} alt="img1" />
         </div>
 
-        <Typography
-          variant="h6"
-          color="white"
-          fontWeight="bold"
-          sx={{ ...style.typoHeading }}
-        >
+        <Typography variant="h2" color="white" sx={{ ...style.typoHeading }}>
           Meet the Control Hub
         </Typography>
         <div className={classes.imgText}>
@@ -45,12 +40,7 @@ const CarouselSlider = () => {
           <img height="220px" width="310px" src={img2} alt="img2" />
         </div>
 
-        <Typography
-          variant="h6"
-          color="white"
-          fontWeight="bold"
-          sx={{ ...style.typoHeading }}
-        >
+        <Typography variant="h2" color="white" sx={{ ...style.typoHeading }}>
           Meet the Exchange Hub
         </Typography>
         <div className={classes.imgText}>
@@ -66,12 +56,7 @@ const CarouselSlider = () => {
         <div className={classes.imageContainer}>
           <img height="220px" width="310px" src={img3} alt="img3" />
         </div>
-        <Typography
-          variant="h6"
-          color="white"
-          fontWeight="bold"
-          sx={{ ...style.typoHeading }}
-        >
+        <Typography variant="h2" color="white" sx={{ ...style.typoHeading }}>
           Meet the Camel Studio
         </Typography>
         <div className={classes.imgText}>

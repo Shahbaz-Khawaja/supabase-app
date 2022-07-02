@@ -11,7 +11,7 @@ const PasswordRecoveryPage = () => {
   return (
     <div className={classes.mainContent}>
       <Typography variant="h1">Password Recovery</Typography>
-      <Typography variant="h5" sx={{ mt: "1rem" }}>
+      <Typography variant="h6" sx={{ mt: "1rem" }}>
         Please fill in the email you have used to create your jetic account and
         we will send you a link to reset your password
       </Typography>

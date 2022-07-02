@@ -5,7 +5,7 @@ const Appbar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography>Invite User by Email</Typography>
+        <Typography variant="h2">Admin</Typography>
       </Toolbar>
     </AppBar>
   );
