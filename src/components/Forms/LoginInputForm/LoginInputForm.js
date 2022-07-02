@@ -1,5 +1,5 @@
 import React from "react";
-import { supabase } from "supabase/supabase_cient";
+// import { supabase } from "supabase/supabase_cient";
 import { Formik, Form } from "formik";
 import { loginSchema } from "utils/schemas/login_schema";
 import {
@@ -30,18 +30,18 @@ const LoginInputForm = () => {
 
   const submitHandler = async (values) => {
     console.log(values);
-    try {
-      const response = await supabase.auth.signIn({
-        email: values.email,
-        password: values.password,
-      });
-      if (response.error) throw response.error;
-      alert("Email sent successfully");
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      values.email = "";
-    }
+    // try {
+    //   const response = await supabase.auth.signIn({
+    //     email: values.email,
+    //     password: values.password,
+    //   });
+    //   if (response.error) throw response.error;
+    //   alert("Email sent successfully");
+    // } catch (error) {
+    //   alert(error.message);
+    // } finally {
+    //   values.email = "";
+    // }
   };
   return (
     <Formik
