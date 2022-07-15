@@ -1,7 +1,8 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@^1.35.4";
 
-const UPDATE_PASSWORD = "http://localhost:3000/update_password";
+const UPDATE_PASSWORD =
+  "https://shiny-sfogliatella-63245c.netlify.app/update_password";
 
 const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_URL") ?? "",

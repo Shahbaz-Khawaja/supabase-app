@@ -66,7 +66,7 @@ const AdminDashboard = () => {
         dispatch(setUsersList(userData));
         dispatch(setLoading(false));
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
       }
     };
 
