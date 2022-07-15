@@ -5,7 +5,8 @@ export const signup_schema = yup.object().shape({
     .string()
     .min(5, "Too short - should be 5 characters minimun")
     .max(25, "Too Long - should be 30 maximum")
-    .required("Name is required"),
+    .required("Name is required")
+    .matches(/^[a-zA-Z ]+$/, "Invalid Name"),
   companyName: yup.string().required("Company Name is required"),
   email: yup.string().email("Invalid Email").required("Email is required"),
   password: yup

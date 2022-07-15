@@ -1,26 +1,59 @@
 import PropTypes from "prop-types";
-// import { useStyles } from "components/Forms/InviteUserForm/InviteUserForm.style";
-import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { style } from "components/InviteDialog/InviteDialog.style";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Typography,
+  IconButton,
+  DialogActions,
+} from "@mui/material";
 import InviteUserForm from "components/Forms/InviteUserForm/InviteUserForm";
+import CloseIcon from "@mui/icons-material/Close";
 
-const InviteDialog = ({ open, handleCloseDialog }) => {
-  // const classes = useStyles();
+const InviteDialog = ({
+  openDialog,
+  handleCloseDialog,
+  handleOpenSnackBar,
+}) => {
   return (
     <Dialog
-      open={open}
+      open={openDialog}
       onClose={handleCloseDialog}
-      sx={{ width: "100%", minWidth: "400px" }}
+      sx={{ ...style.dialog }}
     >
-      <DialogTitle variant="h3">Invite an Employee</DialogTitle>
+      <DialogTitle
+        variant="h3"
+        sx={{
+          ...style.dialogHead,
+        }}
+      >
+        <Typography>Invite an Employee</Typography>
+        <IconButton
+          size="small"
+          onClick={handleCloseDialog}
+          sx={{
+            ...style.closeIcon,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+
       <DialogContent>
-        <InviteUserForm />
+        <InviteUserForm
+          handleCloseDialog={handleCloseDialog}
+          handleOpenSnackBar={handleOpenSnackBar}
+        />
       </DialogContent>
+      <DialogActions></DialogActions>
     </Dialog>
   );
 };
 
 export default InviteDialog;
 InviteDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
+  openDialog: PropTypes.bool.isRequired,
   handleCloseDialog: PropTypes.func,
+  handleOpenSnackBar: PropTypes.func,
 };

@@ -1,6 +1,4 @@
-import { makeStyles } from "@mui/styles";
-
-export const useStyles = makeStyles({
+export const style = {
   form: {
     backgroundColor: "#F8F8F8",
     paddingBottom: "1rem",
@@ -9,9 +7,6 @@ export const useStyles = makeStyles({
     marginTop: "1.6rem",
     textAlign: "right",
   },
-});
-
-export const style = {
   label: {
     fontSize: "14px",
     fontWeight: "bold",

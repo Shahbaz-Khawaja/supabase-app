@@ -1,14 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { TextField, Typography } from "@mui/material";
 import { useField } from "formik";
-import {
-  useStyles,
-  style,
-} from "components/CustomTextField/CustomTextField.style";
+import PropTypes from "prop-types";
+import { TextField, Typography, Box } from "@mui/material";
+import { style } from "components/CustomTextField/CustomTextField.style";
 
 const CustomTextField = ({ label, name, ...otherProps }) => {
-  const classes = useStyles();
   const [field, meta] = useField(name);
   const configTextField = {
     ...field,
@@ -21,10 +17,10 @@ const CustomTextField = ({ label, name, ...otherProps }) => {
     configTextField.helperText = meta.error;
   }
   return (
-    <div className={classes.field}>
+    <Box sx={{ ...style.field }}>
       <Typography sx={{ ...style.label }}>{label}</Typography>
       <TextField {...configTextField} sx={{ ...style.helperText }} />
-    </div>
+    </Box>
   );
 };
 

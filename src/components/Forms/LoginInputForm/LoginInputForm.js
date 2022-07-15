@@ -1,6 +1,5 @@
-import React from "react";
-// import { supabase } from "supabase/supabase_cient";
 import { Formik, Form } from "formik";
+import { supabase } from "supabase/supabase_client";
 import { loginSchema } from "utils/schemas/login_schema";
 import {
   Button,
@@ -15,33 +14,48 @@ import {
   style,
 } from "components/Forms/LoginInputForm/LoginInputForm.style";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import CustomTextField from "components/CustomTextField/CustomTextField";
 import { PASSWORD_RECOVERY_URL } from "utils/constants/constants";
+import { logInUser } from "store";
+import { useNavigate } from "react-router-dom";
+import { ADMINDASHBOARD } from "utils/constants/constants";
+import { useEffect } from "react";
+import { BASE_URL } from "utils/constants/constants";
 
 const LoginInputForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const initialValues = { email: "", password: "" };
+  const user = useSelector((state) => state.authReducer.user);
   const classes = useStyles();
-  // supabase.auth.onAuthStateChange(async (event, session) => {
-  //   const { user, error } = await supabase.auth.api.getUser(
-  //     session.access_token
-  //   );
-  //   console.log(user, error);
-  // });
+
+  useEffect(() => {
+    if (user.id) {
+      navigate(ADMINDASHBOARD);
+    } else {
+      navigate(BASE_URL);
+    }
+  }, [user, navigate]);
 
   const submitHandler = async (values) => {
-    console.log(values);
-    // try {
-    //   const response = await supabase.auth.signIn({
-    //     email: values.email,
-    //     password: values.password,
-    //   });
-    //   if (response.error) throw response.error;
-    //   alert("Email sent successfully");
-    // } catch (error) {
-    //   alert(error.message);
-    // } finally {
-    //   values.email = "";
-    // }
+    try {
+      const { data, error } = await supabase.auth.signIn({
+        email: values.email,
+        password: values.password,
+      });
+      if (error) throw error;
+      dispatch(
+        logInUser({
+          id: data.user.id,
+          email: data.user.email,
+          role: data.user.user_metadata.role,
+        })
+      );
+      navigate(ADMINDASHBOARD);
+    } catch (error) {
+      alert(error.message);
+    }
   };
   return (
     <Formik
@@ -51,7 +65,7 @@ const LoginInputForm = () => {
     >
       {() => (
         <Form>
-          <div className={classes.form}>
+          <Box sx={{ ...style.form }}>
             <CustomTextField
               autoFocus
               name="email"
@@ -66,15 +80,15 @@ const LoginInputForm = () => {
               placeholder="Password"
             />
 
-            <div className={classes.forgotPassword}>
+            <Box sx={{ ...style.forgotPassword }}>
               <Link to={PASSWORD_RECOVERY_URL} className={classes.link}>
                 Forgot password?
               </Link>
-            </div>
+            </Box>
             <Divider />
-          </div>
+          </Box>
 
-          <div className={classes.loginActions}>
+          <Box sx={{ ...style.loginActions }}>
             <FormControlLabel
               control={<Checkbox sx={{ color: "#EEEFEF" }} />}
               label={<Typography variant="body2">Remember me</Typography>}
@@ -89,7 +103,7 @@ const LoginInputForm = () => {
                 Login
               </Button>
             </Box>
-          </div>
+          </Box>
         </Form>
       )}
     </Formik>

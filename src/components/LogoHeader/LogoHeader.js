@@ -1,16 +1,15 @@
 import React from "react";
-import { SvgIcon } from "@mui/material";
-import { useStyles, style } from "components/LogoHeader/LogoHeader.style";
+import { SvgIcon, Box } from "@mui/material";
+import { style } from "components/LogoHeader/LogoHeader.style";
 import { ReactComponent as Logo } from "assets/jetic-logo.svg";
 
 function LogoHeader() {
-  const classes = useStyles();
   return (
-    <div className={classes.logoHeader}>
-      <SvgIcon inheritViewBox sx={{ ...style }}>
+    <Box sx={{ ...style.logoHeader }}>
+      <SvgIcon inheritViewBox sx={{ ...style.icon }}>
         <Logo />
       </SvgIcon>
-    </div>
+    </Box>
   );
 }
 

@@ -6,12 +6,16 @@ export const useStyles = makeStyles((theme) => {
       marginTop: "2rem",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center",
     },
     user: {
       width: "80%",
       display: "flex",
+      margin: "1rem 4rem",
       justifyContent: "space-between",
+      alignItems: "center",
+    },
+    usersList: {
+      margin: "1rem 4rem",
     },
   };
 });

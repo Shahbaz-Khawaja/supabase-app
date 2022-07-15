@@ -9,12 +9,12 @@ import {
   Box,
   Button,
 } from "@mui/material";
+import { supabase } from "supabase/supabase_client";
 import { signup_schema } from "utils/schemas/signup_schema";
-import { useStyles, style } from "components/Forms/SignupForm/SignUpForm.style";
+import { style } from "components/Forms/SignupForm/SignUpForm.style";
 import CustomTextField from "components/CustomTextField/CustomTextField";
 
 const SignUpForm = () => {
-  const classes = useStyles();
   const initialValues = {
     name: "",
     companyName: "",
@@ -22,8 +22,32 @@ const SignUpForm = () => {
     password: "",
     confirmPassword: "",
   };
-  const handleSubmit = (values) => {
-    console.log(values);
+  const handleSubmit = async (values) => {
+    try {
+      const { error } = await supabase.auth.signUp(
+        {
+          email: values.email,
+          password: values.password,
+        },
+        {
+          data: {
+            name: values.name,
+            companyName: values.companyName,
+            role: "Candidate",
+          },
+        }
+      );
+      if (error) throw error;
+      alert("Please Confirm Your Email.");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      values.name = "";
+      values.companyName = "";
+      values.email = "";
+      values.password = "";
+      values.confirmPassword = "";
+    }
   };
   return (
     <Formik
@@ -33,7 +57,7 @@ const SignUpForm = () => {
     >
       {() => (
         <Form>
-          <div className={classes.form}>
+          <Box sx={{ ...style.form }}>
             <CustomTextField
               autoFocus
               name="name"
@@ -67,26 +91,26 @@ const SignUpForm = () => {
               label="Repeat Password"
               placeholder="Repeat Password"
             />
-          </div>
+          </Box>
           <Divider />
 
-          <div className={classes.terms}>
-            <div className={classes.action}>
+          <Box sx={{ ...style.terms }}>
+            <Box sx={{ ...style.action }}>
               <FormControlLabel
                 control={<Checkbox checked={true} sx={{ color: "#EEEFEF" }} />}
                 label={
-                  <div className={classes.action}>
+                  <Box sx={{ ...style.action }}>
                     <Typography variant="body2" sx={{ mr: "6px" }}>
                       I&apos;ve read and accept the
                     </Typography>
                     <Link href="#" underline="none" sx={{ ...style.link }}>
                       Terms of Service
                     </Link>
-                  </div>
+                  </Box>
                 }
               />
-            </div>
-            <div className={classes.action}>
+            </Box>
+            <Box sx={{ ...style.action }}>
               <FormControlLabel
                 control={<Checkbox checked={true} sx={{ color: "#EEEFEF" }} />}
                 label={
@@ -95,8 +119,8 @@ const SignUpForm = () => {
                   </Typography>
                 }
               />
-            </div>
-            <Box className={classes.createAccountBtn}>
+            </Box>
+            <Box sx={{ ...style.createAccountBtn }}>
               <Button
                 variant="contained"
                 type="submit"
@@ -106,7 +130,7 @@ const SignUpForm = () => {
                 Create Account
               </Button>
             </Box>
-          </div>
+          </Box>
         </Form>
       )}
     </Formik>

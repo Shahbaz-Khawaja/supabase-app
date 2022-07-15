@@ -1,15 +1,10 @@
-import { makeStyles } from "@mui/styles";
-
-export const useStyles = makeStyles({
+export const style = {
   field: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "baseline",
     marginBottom: "0.5rem",
   },
-});
-
-export const style = {
   textField: {
     fontSize: "14px",
     padding: "7.2px 12px",

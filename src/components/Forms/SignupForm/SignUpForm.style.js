@@ -1,6 +1,4 @@
-import { makeStyles } from "@mui/styles";
-
-export const useStyles = makeStyles({
+export const style = {
   form: {
     backgroundColor: "#F8F8F8",
     marginBottom: "2rem",
@@ -16,9 +14,6 @@ export const useStyles = makeStyles({
     display: "flex",
     alignItems: "baseline",
   },
-});
-
-export const style = {
   link: {
     fontWeight: "bold",
     fontSize: "13.5px",

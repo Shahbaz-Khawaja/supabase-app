@@ -1,29 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Divider } from "@mui/material";
+import { Divider, Box } from "@mui/material";
 import Footer from "components/Footer/Footer";
 import LogoHeader from "components/LogoHeader/LogoHeader";
 import CarouselSlider from "components/Carousel/Carousel";
-import { useStyles } from "layouts/LoginLayout/LoginLayout.style";
+import { style } from "layouts/LoginLayout/LoginLayout.style";
 
 const LoginLayout = ({ children }) => {
-  const classes = useStyles();
   return (
-    <div className={classes.loginPage}>
-      <div className={classes.login}>
-        <div className={classes.headerLogo}>
+    <Box sx={{ ...style.loginPage }}>
+      <Box sx={{ ...style.login }}>
+        <Box sx={{ ...style.headerLogo }}>
           <LogoHeader />
           <Divider />
-        </div>
+        </Box>
         {children}
-        <div className={classes.footer}>
+        <Box sx={{ ...style.footer }}>
           <Footer />
-        </div>
-      </div>
-      <div className={classes.slider}>
+        </Box>
+      </Box>
+      <Box sx={{ ...style.slider }}>
         <CarouselSlider />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
