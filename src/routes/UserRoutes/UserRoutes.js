@@ -1,27 +1,20 @@
 import { logInUser } from "store";
 import { useDispatch } from "react-redux";
+import ErrorPage from "views/error/ErrorPage";
 import LoginPage from "views/login/LoginPage";
 import SignUpPage from "views/signup/SignUpPage";
+import PATH from "utils/constants/path.constant";
 import React, { useState, useEffect } from "react";
 import { supabase } from "supabase/supabase_client";
 import LoginLayout from "layouts/LoginLayout/LoginLayout";
+import CustomRoutes from "routes/CustomRoutes/CustomRoutes";
 import ProgressBar from "components/ProgressBar/ProgressBar";
-import AdminDashboard from "views/AdminDashboard/AdminDashboard";
+import UserDashboard from "views/userDashboard/UserDashboard";
+import UserProfilePage from "views/userProfile/UserProfilePage";
 import DashboardLayout from "layouts/dashboardLayout/DashboardLayout";
+import UpdatePasswordPage from "views/updatePassword/UpdatePasswordPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PasswordRecoveryPage from "views/passwordRecovery/PasswordRecoveryPage";
-import {
-  BASE_URL,
-  REGISTRATION_URL,
-  ADMINDASHBOARD,
-  PASSWORD_RECOVERY_URL,
-} from "utils/constants/constants";
-import ErrorPage from "views/error/ErrorPage";
-import { PROFILE } from "utils/constants/constants";
-import { UPDATE_PASSWORD } from "utils/constants/constants";
-import CustomRoutes from "routes/CustomRoutes/CustomRoutes";
-import UserProfilePage from "views/UserProfile/UserProfilePage";
-import UpdatePasswordPage from "views/updatePassword/UpdatePasswordPage";
 
 const UserRoutes = () => {
   const dispatch = useDispatch();
@@ -36,6 +29,9 @@ const UserRoutes = () => {
             id: user.id,
             email: user.email,
             role: user.user_metadata.role,
+            priority: user.user_metadata.priority,
+            previousStatus: user.user_metadata.previousStatus,
+            currentStatus: user.user_metadata.currentStatus,
           })
         );
         setLoading(false);
@@ -56,7 +52,7 @@ const UserRoutes = () => {
       <Routes>
         <Route
           exact
-          path={BASE_URL}
+          path={PATH.BASE_URL}
           element={
             <LoginLayout>
               <LoginPage />
@@ -65,7 +61,7 @@ const UserRoutes = () => {
         />
         <Route
           exact
-          path={REGISTRATION_URL}
+          path={PATH.REGISTRATION_URL}
           element={
             <LoginLayout>
               <SignUpPage />
@@ -74,7 +70,7 @@ const UserRoutes = () => {
         />
         <Route
           exact
-          path={PASSWORD_RECOVERY_URL}
+          path={PATH.PASSWORD_RECOVERY_URL}
           element={
             <LoginLayout>
               <PasswordRecoveryPage />
@@ -82,7 +78,7 @@ const UserRoutes = () => {
           }
         />
         <Route
-          path={UPDATE_PASSWORD}
+          path={PATH.UPDATE_PASSWORD}
           element={
             <LoginLayout>
               <UpdatePasswordPage />
@@ -92,15 +88,15 @@ const UserRoutes = () => {
 
         <Route element={<CustomRoutes />}>
           <Route
-            path={ADMINDASHBOARD}
+            path={PATH.USER_DASHBOARD}
             element={
               <DashboardLayout>
-                <AdminDashboard />
+                <UserDashboard />
               </DashboardLayout>
             }
           />
           <Route
-            path={PROFILE}
+            path={`${PATH.USER_PROFILE}/:id`}
             element={
               <DashboardLayout>
                 <UserProfilePage />

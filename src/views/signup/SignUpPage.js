@@ -1,9 +1,9 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import PATH from "utils/constants/path.constant";
 import { useStyles } from "views/signup/SignUpPage.style";
 import SignUpForm from "components/Forms/SignupForm/SignUpForm";
-import { BASE_URL } from "utils/constants/constants";
 
 const SignUpPage = () => {
   const classes = useStyles();
@@ -21,7 +21,7 @@ const SignUpPage = () => {
         <Typography variant="body2" sx={{ mr: "6px" }}>
           Already have an account?
         </Typography>
-        <Link to={BASE_URL} className={classes.link}>
+        <Link to={PATH.BASE_URL} className={classes.link}>
           Login
         </Link>
       </div>

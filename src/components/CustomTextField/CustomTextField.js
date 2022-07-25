@@ -19,7 +19,12 @@ const CustomTextField = ({ label, name, ...otherProps }) => {
   return (
     <Box sx={{ ...style.field }}>
       <Typography sx={{ ...style.label }}>{label}</Typography>
-      <TextField {...configTextField} sx={{ ...style.helperText }} />
+      <TextField
+        sx={{
+          ...style.helperText,
+        }}
+        {...configTextField}
+      />
     </Box>
   );
 };

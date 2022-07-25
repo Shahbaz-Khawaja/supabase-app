@@ -4,6 +4,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@^1.35.4";
 const UPDATE_PASSWORD =
   "https://shiny-sfogliatella-63245c.netlify.app/update_password";
 
+// const UPDATE_PASSWORD = "http://localhost:3000/update_password";
 const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_URL") ?? "",
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
@@ -22,13 +23,16 @@ serve(async (req) => {
   }
 
   try {
-    const { email, role } = await req.json();
-
-    console.log(role);
+    const { email, role, priority } = await req.json();
     const { data, error } = await supabaseAdmin.auth.api.inviteUserByEmail(
       email,
       {
-        data: { role: role },
+        data: {
+          role: role,
+          priority: priority,
+          previousStatus: "Invited",
+          currentStatus: "Invited",
+        },
         redirectTo: UPDATE_PASSWORD,
       }
     );

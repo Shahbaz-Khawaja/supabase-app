@@ -2,8 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { style } from "views/error/ErrorPage.style";
 import { Button, Box, Typography } from "@mui/material";
-import { BASE_URL } from "utils/constants/constants";
-
+import PATH from "utils/constants/path.constant";
 const ErrorPage = () => {
   const navigate = useNavigate();
   return (
@@ -16,7 +15,7 @@ const ErrorPage = () => {
         sx={{ ...style.btn }}
         varinat="text"
         color="inherit"
-        onClick={() => navigate(BASE_URL)}
+        onClick={() => navigate(PATH.BASE_URL)}
       >
         Go Back
       </Button>

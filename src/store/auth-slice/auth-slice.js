@@ -2,7 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: true,
-  user: {},
+  user: {
+    id: "",
+    email: "",
+    role: "",
+    priority: "",
+    previousStatus: "",
+    currentStatus: "",
+  },
 };
 
 export const authSlice = createSlice({
@@ -12,9 +19,16 @@ export const authSlice = createSlice({
     logInUser: (state, action) => {
       state.user = action.payload;
     },
-
+    updateCurrentUserStatus: (state, action) => {
+      state.user.currentStatus = action.payload;
+    },
     logOutUser: (state) => {
-      state.user = {};
+      state.user.id = "";
+      state.user.email = "";
+      state.user.role = "";
+      state.user.priority = "";
+      state.user.previousStatus = "";
+      state.user.currentStatus = "";
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -22,5 +36,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logOutUser, logInUser, setLoading } = authSlice.actions;
+export const { logOutUser, logInUser, updateCurrentUserStatus, setLoading } =
+  authSlice.actions;
 export default authSlice.reducer;

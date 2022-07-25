@@ -19,19 +19,22 @@ serve(async (req) => {
   }
 
   try {
-    const { user } = await supabaseAdmin.auth.signUp(
-      {
-        email: "shahbaz.khawaja@techno-soft.com",
-        password: "tstststs",
+    const { user } = await supabaseAdmin.auth.api.createUser({
+      email: "shahbaz.khawaja@techno-soft.com",
+      password: "tstststs",
+      email_confirm: true,
+      user_metadata: {
+        role: "Admin",
+        priority: 5,
+        previousStatus: "Registered",
+        currentStatus: "Registered",
       },
-      { data: { role: "Admin", status: "Confirmed" } }
-    );
+    });
 
-    const { error } = await supabaseAdmin
-      .from("Employee")
-      .insert({ user_id: user?.id });
+    await supabaseAdmin.from("Employees").insert({ user_id: user?.id });
 
-    if (error) throw error;
+    await supabaseAdmin.from("Banking Info").insert({ user_id: user?.id });
+
     return new Response(JSON.stringify(user?.id), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,

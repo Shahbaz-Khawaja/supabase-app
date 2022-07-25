@@ -1,9 +1,9 @@
 import React from "react";
-import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { Typography } from "@mui/material";
+import PATH from "utils/constants/path.constant";
 import { useStyles } from "views/passwordRecovery/PasswordRecoveryPage.style";
 import PasswordRecoveryForm from "components/Forms/PasswordRecoveryForm/PasswordRecoveryForm";
-import { BASE_URL } from "utils/constants/constants";
 
 const PasswordRecoveryPage = () => {
   const classes = useStyles();
@@ -19,7 +19,7 @@ const PasswordRecoveryPage = () => {
         <PasswordRecoveryForm />
       </div>
       <div className={classes.center}>
-        <Link to={BASE_URL} className={classes.link}>
+        <Link to={PATH.BASE_URL} className={classes.link}>
           Back to Login
         </Link>
       </div>

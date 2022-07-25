@@ -9,7 +9,6 @@ export const useStyles = makeStyles((theme) => {
     login: {
       width: "50vw",
       height: "100vh",
-      backgroundColor: theme.palette.secondary.main,
       position: "relative",
       display: "flex",
       flexDirection: "column",
@@ -45,7 +44,6 @@ export const style = {
   login: {
     width: "50vw",
     height: "100vh",
-    backgroundColor: "secondary.main",
     position: "relative",
     display: "flex",
     flexDirection: "column",

@@ -6,30 +6,33 @@ import { style } from "components/Forms/PasswordRecoveryForm/PasswordRecoveryFor
 import CustomTextField from "components/CustomTextField/CustomTextField";
 import { supabase } from "supabase/supabase_client";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "utils/constants/constants";
+import STATUS from "utils/constants/status.constant";
+import PATH from "utils/constants/path.constant";
 
 const UpdatePasswordForm = () => {
   const navigate = useNavigate();
   const initialValues = { password: "", confirmPassword: "" };
 
   const submitHandler = async (values) => {
+    const userRole = supabase.auth.user().user_metadata.role;
     try {
       const { user } = await supabase.auth.update({
         password: values.password,
-        data: { status: "Confirmed" },
+        data: {
+          previousStatus: userRole !== "Candidate" && STATUS.registered,
+          currentStatus: userRole !== "Candidate" && STATUS.registered,
+        },
       });
-
-      const { error } = await supabase
-        .from("Employee")
-        .insert({ user_id: user.id });
+      await supabase.from("Employees").insert({ user_id: user.id });
+      await supabase.from("Banking Info").insert({ user_id: user.id });
 
       alert("updated password successfully.");
-      if (error) throw error;
-      navigate(BASE_URL);
+      navigate(PATH.BASE_URL);
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <Formik
       initialValues={initialValues}

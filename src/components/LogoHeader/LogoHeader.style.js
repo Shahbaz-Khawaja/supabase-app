@@ -3,7 +3,6 @@ export const style = {
     display: "flex",
     alignItems: "center",
     padding: "0.675rem 1rem",
-    backgroundColor: "white",
   },
   icon: {
     height: "25px",

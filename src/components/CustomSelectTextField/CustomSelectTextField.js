@@ -4,10 +4,11 @@ import React from "react";
 import { MenuItem, TextField, Typography, Box } from "@mui/material";
 import { style } from "components/CustomSelectTextField/CustomSelectTextField.style";
 
-const CustomSelectTextField = ({ label, name, items }) => {
+const CustomSelectTextField = ({ label, name, items, ...otherProps }) => {
   const [field, meta] = useField(name);
   const configTextField = {
     ...field,
+    ...otherProps,
     variant: "outlined",
   };
 

@@ -18,8 +18,28 @@ export const userSlice = createSlice({
     setUsersList: (state, action) => {
       state.allUsers = [...action.payload];
     },
+    updateUserStatusFromList: (state, action) => {
+      state.allUsers.forEach((user) => {
+        if (user.id === action.payload.id) {
+          user.currentStatus = action.payload.status;
+        }
+      });
+    },
+    deleteUser: (state, action) => {
+      state.allUsers.forEach((user, index) => {
+        if (user.id === action.payload) {
+          return state.allUsers.splice(index, 1);
+        }
+      });
+    },
   },
 });
 
-export const { inviteUser, setUsersList, getUserDetails } = userSlice.actions;
+export const {
+  inviteUser,
+  setUsersList,
+  getUserDetails,
+  deleteUser,
+  updateUserStatusFromList,
+} = userSlice.actions;
 export default userSlice.reducer;

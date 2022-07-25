@@ -1,19 +1,41 @@
 import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
-import { BASE_URL } from "utils/constants/constants";
+import PATH from "utils/constants/path.constant";
+import { supabase } from "supabase/supabase_client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStyles } from "views/updatePassword/UpdatePasswordPage.style";
 import UpdatePasswordForm from "components/Forms/UpdatePasswordForm/UpdatePasswordForm";
 
 const UpdatePasswordPage = () => {
+  const classes = useStyles();
   const location = useLocation();
   const navigate = useNavigate();
-  const classes = useStyles();
+
+  const getAcessToken = (hash_URL) => {
+    const parts = hash_URL.split("&");
+    const params = parts.reduce((map, part) => {
+      const pieces = part.split("=");
+      map[pieces[0]] = pieces[1];
+      return map;
+    }, {});
+    return params["#access_token"];
+  };
 
   useEffect(() => {
-    if (!location.hash || location.hash.includes("error_code=401")) {
-      navigate(BASE_URL);
+    if (location.hash) {
+      const accessToken = getAcessToken(location.hash);
+      if (!accessToken) {
+        navigate(PATH.BASE_URL);
+      }
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event !== "SIGNED_IN" && accessToken !== session?.access_token) {
+          navigate(PATH.BASE_URL);
+        }
+      });
+    } else if (!location.hash || location.hash.includes("error_code=401")) {
+      navigate(PATH.BASE_URL);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

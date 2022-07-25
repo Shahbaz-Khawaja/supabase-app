@@ -9,7 +9,6 @@ export const style = {
     fontSize: "14px",
     padding: "7.2px 12px",
     width: "244px",
-    backgroundColor: "white",
   },
   label: {
     fontSize: "14px",
@@ -21,6 +20,9 @@ export const style = {
       fontSize: "0.75rem",
       textAlign: "right",
       margin: "0px",
+    },
+    "& .MuiOutlinedInput-root": {
+      padding: "0px",
     },
   },
 };

@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme) => {
       alignItems: "baseline",
     },
     link: {
+      color: theme.palette.primary.main,
       textDecoration: "none",
       fontSize: "13.5px",
       fontWeight: "500",

@@ -4,20 +4,18 @@ export const style = {
       backgroundColor: "primary.light",
     },
   },
-  confirmedStatusCard: {
+  statusCard: {
     width: "120px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     padding: "5px",
-    color: "primary.main",
   },
-  invitesStatusCard: {
-    width: "120px",
+  notFound: {
     display: "flex",
-    alignItems: "center",
+    flexDirection: "column",
     justifyContent: "center",
-    padding: "5px",
-    color: "warning.main",
+    alignItems: "center",
+    margin: "6rem auto",
   },
 };

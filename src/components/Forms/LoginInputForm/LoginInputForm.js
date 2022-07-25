@@ -16,25 +16,26 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CustomTextField from "components/CustomTextField/CustomTextField";
-import { PASSWORD_RECOVERY_URL } from "utils/constants/constants";
 import { logInUser } from "store";
 import { useNavigate } from "react-router-dom";
-import { ADMINDASHBOARD } from "utils/constants/constants";
-import { useEffect } from "react";
-import { BASE_URL } from "utils/constants/constants";
+import PATH from "utils/constants/path.constant";
+import { useEffect, useState } from "react";
+import STATUS from "utils/constants/status.constant";
+import { logOutUser } from "store";
 
 const LoginInputForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [userAllowed, setUserAllowed] = useState(true);
   const initialValues = { email: "", password: "" };
   const user = useSelector((state) => state.authReducer.user);
   const classes = useStyles();
 
   useEffect(() => {
     if (user.id) {
-      navigate(ADMINDASHBOARD);
+      navigate(PATH.USER_DASHBOARD);
     } else {
-      navigate(BASE_URL);
+      navigate(PATH.BASE_URL);
     }
   }, [user, navigate]);
 
@@ -50,9 +51,18 @@ const LoginInputForm = () => {
           id: data.user.id,
           email: data.user.email,
           role: data.user.user_metadata.role,
+          priority: data.user.user_metadata.priority,
+          currentStatus: data.user.user_metadata.currentStatus,
+          previousStatus: data.user.user_metadata.previousStatus,
         })
       );
-      navigate(ADMINDASHBOARD);
+      if (data.user.user_metadata.currentStatus === STATUS.deactivated) {
+        supabase.auth.signOut();
+        dispatch(logOutUser());
+        setUserAllowed(false);
+      } else {
+        navigate(PATH.USER_DASHBOARD);
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -81,11 +91,26 @@ const LoginInputForm = () => {
             />
 
             <Box sx={{ ...style.forgotPassword }}>
-              <Link to={PASSWORD_RECOVERY_URL} className={classes.link}>
+              <Link to={PATH.PASSWORD_RECOVERY_URL} className={classes.link}>
                 Forgot password?
               </Link>
             </Box>
             <Divider />
+            {!userAllowed && (
+              <Box
+                sx={{
+                  ...style.errorLogin,
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  color="error.main"
+                  fontWeight="bold"
+                >
+                  User not Allowed, Please contact Admin.
+                </Typography>
+              </Box>
+            )}
           </Box>
 
           <Box sx={{ ...style.loginActions }}>

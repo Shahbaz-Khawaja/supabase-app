@@ -4,11 +4,23 @@ import { passwordRecoverySchema } from "utils/schemas/password_recovery_schema";
 import { Button, Divider, Box } from "@mui/material";
 import { style } from "components/Forms/PasswordRecoveryForm/PasswordRecoveryForm.style";
 import CustomTextField from "components/CustomTextField/CustomTextField";
+// import { supabase } from "supabase/supabase_client";
 
 const PasswordRecoveryForm = () => {
   const initialValues = { email: "" };
 
-  const submitHandler = async (values) => {};
+  const submitHandler = async (values) => {
+    //   try {
+    //     const { data, error } = await supabase.auth.api.resetPasswordForEmail(
+    //       values.email,
+    //       { redirectTo: "http://localhost:3000/update_password" }
+    //     );
+    //     if (error) throw error;
+    //     alert("plz confirm your Email");
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+  };
   return (
     <Formik
       initialValues={initialValues}

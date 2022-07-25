@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Formik, Form } from "formik";
 import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-import { roles } from "utils/constants/constants";
+import ROLES from "utils/constants/roles.constant";
 import { supabase } from "supabase/supabase_client";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Divider, Box, Typography } from "@mui/material";
@@ -14,7 +14,7 @@ import CustomSelectTextField from "components/CustomSelectTextField/CustomSelect
 
 const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
   const [emailExist, setEmailExist] = useState(false);
-  const initialValues = { email: "", selectRole: roles[0] };
+  const initialValues = { email: "", selectRole: ROLES[0].role };
   const usersList = useSelector((state) => state.userReducer.allUsers);
   const users = usersList.map((user) => {
     return user.email;
@@ -26,19 +26,26 @@ const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
   };
 
   const submitHandler = (values) => {
+    const data = ROLES.filter((row) => {
+      return row.role === values.selectRole;
+    });
+    const priority = data[0].priority;
+
     const handleUserInvite = async () => {
       try {
         const { data } = await supabase.functions.invoke("invite-user", {
           body: JSON.stringify({
             email: values.email,
             role: values.selectRole,
+            priority: priority,
           }),
         });
         const userData = {
           id: data.id,
           email: data.email,
           role: data.user_metadata.role,
-          status: data.email_confirmed_at ? "Confirmed" : "In-Progress",
+          previousStatus: data.user_metadata.previousStatus,
+          currentStatus: data.user_metadata.currentStatus,
         };
         handleOpenSnackBar();
         dispatch(inviteUser(userData));
@@ -75,21 +82,23 @@ const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
             <CustomSelectTextField
               name="selectRole"
               label="Role"
-              items={roles}
+              items={ROLES.map((row) => {
+                return row.role;
+              })}
             />
           </Box>
           <Divider />
-          {emailExist ? (
+          {emailExist && (
             <Box
               sx={{
                 ...style.errorInvite,
               }}
             >
-              <Typography variant="body2" color="error.main" fontWeight="bold">
+              <Typography variant="body2" fontWeight="bold">
                 Email already Existed.
               </Typography>
             </Box>
-          ) : null}
+          )}
 
           <Box sx={{ ...style.invite }}>
             <Button

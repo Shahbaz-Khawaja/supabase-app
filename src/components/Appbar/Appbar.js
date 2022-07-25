@@ -8,24 +8,29 @@ import {
   Menu,
   MenuItem,
   Box,
+  Divider,
 } from "@mui/material";
 import React, { useState } from "react";
 import { logOutUser } from "store";
 import { useNavigate } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
-import { PROFILE } from "utils/constants/constants";
 import { supabase } from "supabase/supabase_client";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { BASE_URL } from "utils/constants/constants";
 import { style } from "components/Appbar/Appbar.style";
 import { useDispatch, useSelector } from "react-redux";
-import { ADMINDASHBOARD } from "utils/constants/constants";
+import HomeIcon from "@mui/icons-material/Home";
+import PersonIcon from "@mui/icons-material/Person";
+import PATH from "utils/constants/path.constant";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import profileImg from "assets/profile.jpg";
+import { toggleTheme } from "store";
 
 const Appbar = () => {
-  const user = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.authReducer.user);
+  const lightTheme = useSelector((state) => state.toggleReducer.lightTheme);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -43,59 +48,68 @@ const Appbar = () => {
     if (error) {
       throw error;
     } else {
-      navigate(BASE_URL);
+      navigate(PATH.BASE_URL);
     }
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" color="inherit" elevation={0}>
       <Toolbar>
-        <Tooltip title="Main Menu">
-          <IconButton
-            edge="start"
-            size="large"
-            aria-label="menu"
-            color="secondary"
-          >
-            <MenuIcon />
-          </IconButton>
-        </Tooltip>
         <Typography variant="h2">{user.role}</Typography>
         <div style={{ ...style.actions }}>
-          <Typography variant="body2" fontSize={15.5} fontWeight={600}>
-            {user.email}
-          </Typography>
+          <Tooltip title={lightTheme ? "Dark Mode" : "Light Mode"}>
+            <IconButton size="large" onClick={() => dispatch(toggleTheme())}>
+              {lightTheme ? (
+                <DarkModeOutlinedIcon />
+              ) : (
+                <LightModeOutlinedIcon />
+              )}
+            </IconButton>
+          </Tooltip>
 
           <Box onClick={handleClick} sx={{ ...style.row }}>
-            <Avatar>{user.email[0]}</Avatar>
+            <Avatar src={profileImg} />
             <ArrowDropDownIcon />
           </Box>
 
           <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
             <MenuItem
+              sx={{ ...style.menuItem }}
               onClick={() => {
                 handleClose();
-                navigate(ADMINDASHBOARD);
+                navigate(PATH.USER_DASHBOARD);
               }}
             >
-              <Typography variant="body2">View Dashboard</Typography>
+              <Box sx={{ ...style.flex }}>
+                <HomeIcon fontSize="small" />
+                <Typography variant="body2" sx={{ ml: "5px" }}>
+                  View Dashboard
+                </Typography>
+              </Box>
             </MenuItem>
             <MenuItem
+              sx={{ ...style.menuItem }}
               onClick={() => {
                 handleClose();
-                navigate(PROFILE);
+                navigate(`${PATH.USER_PROFILE}/${user.id}`);
               }}
             >
-              <Typography variant="body2">Your Profile</Typography>
+              <Box sx={{ ...style.flex }}>
+                <PersonIcon fontSize="small" />
+                <Typography variant="body2" sx={{ ml: "5px" }}>
+                  View Profile
+                </Typography>
+              </Box>
             </MenuItem>
             <MenuItem
+              sx={{ ...style.menuItem }}
               onClick={() => {
                 handleClose();
                 handleLogout();
               }}
             >
               <Box sx={{ ...style.flex }}>
-                <LogoutIcon fontSize="small" color="primary" />
+                <LogoutIcon fontSize="small" />
                 <Typography
                   variant="body2"
                   sx={{
@@ -109,6 +123,7 @@ const Appbar = () => {
           </Menu>
         </div>
       </Toolbar>
+      <Divider />
     </AppBar>
   );
 };

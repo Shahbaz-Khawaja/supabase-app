@@ -1,6 +1,5 @@
 export const style = {
   form: {
-    backgroundColor: "#F8F8F8",
     paddingBottom: "1rem",
   },
   resetPassword: {

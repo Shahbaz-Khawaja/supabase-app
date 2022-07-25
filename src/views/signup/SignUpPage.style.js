@@ -17,6 +17,7 @@ export const useStyles = makeStyles((theme) => {
       justifyContent: "center",
     },
     link: {
+      color: theme.palette.primary.main,
       textDecoration: "none",
       fontSize: "13.5px",
       fontWeight: "500",

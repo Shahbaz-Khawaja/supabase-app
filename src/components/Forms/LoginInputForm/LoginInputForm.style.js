@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles((theme) => {
   return {
     link: {
+      color: theme.palette.primary.main,
       textDecoration: "none",
       fontSize: "13.5px",
       fontWeight: "500",
@@ -22,7 +23,6 @@ export const style = {
   },
   form: {
     marginTop: "2rem",
-    backgroundColor: "#F8F8F8",
   },
   forgotPassword: {
     textAlign: "right",
@@ -36,5 +36,10 @@ export const style = {
   loginBtn: {
     fontSize: "14px",
     padding: "4px 6px",
+  },
+  errorInvite: {
+    backgroundColor: "#ffe0e0",
+    padding: "10px",
+    borderRadius: "2px",
   },
 };

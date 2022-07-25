@@ -1,6 +1,7 @@
 export const style = {
   actions: {
     display: "flex",
+    gap: "10px",
     alignItems: "center",
     marginLeft: "auto",
     marginRight: 0,
@@ -16,7 +17,8 @@ export const style = {
   },
   logoutBtn: {
     ml: "5px",
-    color: "primary.main",
-    fontWeight: "bold",
+  },
+  menuItem: {
+    "&:hover": { backgroundColor: "primary.main", color: "white" },
   },
 };

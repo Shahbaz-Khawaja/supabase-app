@@ -17,7 +17,6 @@ import CustomTextField from "components/CustomTextField/CustomTextField";
 const SignUpForm = () => {
   const initialValues = {
     name: "",
-    companyName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -32,9 +31,12 @@ const SignUpForm = () => {
         {
           data: {
             name: values.name,
-            companyName: values.companyName,
             role: "Candidate",
+            priority: 1,
+            previousStatus: "Email not Confirmed",
+            currentStatus: "Email not Confirmed",
           },
+          redirectTo: "http://localhost:3000/",
         }
       );
       if (error) throw error;
@@ -43,7 +45,6 @@ const SignUpForm = () => {
       alert(error.message);
     } finally {
       values.name = "";
-      values.companyName = "";
       values.email = "";
       values.password = "";
       values.confirmPassword = "";
@@ -63,12 +64,6 @@ const SignUpForm = () => {
               name="name"
               label="Name"
               placeholder="Name"
-            />
-
-            <CustomTextField
-              name="companyName"
-              label="Company Name"
-              placeholder="Company Name"
             />
 
             <CustomTextField

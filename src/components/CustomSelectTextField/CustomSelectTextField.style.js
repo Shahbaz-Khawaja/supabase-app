@@ -14,13 +14,15 @@ export const style = {
     width: "267px",
     "& .MuiSelect-select": {
       fontSize: "14px",
-      backgroundColor: "white",
       padding: "7.2px 12px",
     },
     "& .MuiFormHelperText-root.Mui-error": {
       fontSize: "0.75rem",
       textAlign: "right",
       margin: "0px",
+    },
+    "& .MuiOutlinedInput-root": {
+      padding: "0px",
     },
   },
   menuItem: {
