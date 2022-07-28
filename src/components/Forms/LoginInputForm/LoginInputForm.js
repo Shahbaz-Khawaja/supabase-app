@@ -66,6 +66,7 @@ const LoginInputForm = () => {
         supabase.auth.signOut();
         dispatch(logOutUser());
         setUserAllowed(false);
+        setLoading(false);
       } else {
         setLoading(false);
         navigate(PATH.USER_DASHBOARD);
