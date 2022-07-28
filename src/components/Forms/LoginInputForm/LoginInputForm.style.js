@@ -37,9 +37,4 @@ export const style = {
     fontSize: "14px",
     padding: "4px 6px",
   },
-  errorInvite: {
-    backgroundColor: "#ffe0e0",
-    padding: "10px",
-    borderRadius: "2px",
-  },
 };

@@ -3,11 +3,14 @@ export const style = {
     width: "70%",
     display: "flex",
     flexDirection: "column",
-    margin: "2rem auto",
+    margin: "1.2rem auto",
   },
-  center: {
+  cardContent: {
     display: "flex",
     alignItems: "center",
+    "&.MuiCardContent-root:last-child": {
+      pb: "16px",
+    },
   },
   avatar: {
     height: "10vw",
@@ -39,5 +42,11 @@ export const style = {
     "&:hover": {
       backgroundColor: "primary.main",
     },
+  },
+  profileActions: {
+    display: "flex",
+    justifyContent: "center",
+    gap: "5px",
+    mt: "8px",
   },
 };

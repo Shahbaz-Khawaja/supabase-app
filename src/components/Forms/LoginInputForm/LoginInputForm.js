@@ -2,12 +2,12 @@ import { Formik, Form } from "formik";
 import { supabase } from "supabase/supabase_client";
 import { loginSchema } from "utils/schemas/login_schema";
 import {
-  Button,
   FormControlLabel,
   Checkbox,
   Typography,
   Divider,
   Box,
+  Alert,
 } from "@mui/material";
 import {
   useStyles,
@@ -22,11 +22,14 @@ import PATH from "utils/constants/path.constant";
 import { useEffect, useState } from "react";
 import STATUS from "utils/constants/status.constant";
 import { logOutUser } from "store";
+import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
 
 const LoginInputForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userAllowed, setUserAllowed] = useState(true);
+  const [isError, setIsError] = useState("");
+  const [loading, setLoading] = useState(false);
   const initialValues = { email: "", password: "" };
   const user = useSelector((state) => state.authReducer.user);
   const classes = useStyles();
@@ -41,6 +44,7 @@ const LoginInputForm = () => {
 
   const submitHandler = async (values) => {
     try {
+      setLoading(true);
       const { data, error } = await supabase.auth.signIn({
         email: values.email,
         password: values.password,
@@ -51,20 +55,24 @@ const LoginInputForm = () => {
           id: data.user.id,
           email: data.user.email,
           role: data.user.user_metadata.role,
+          avatarURL: data.user.user_metadata.avatarURL,
           priority: data.user.user_metadata.priority,
           currentStatus: data.user.user_metadata.currentStatus,
           previousStatus: data.user.user_metadata.previousStatus,
         })
       );
+
       if (data.user.user_metadata.currentStatus === STATUS.deactivated) {
         supabase.auth.signOut();
         dispatch(logOutUser());
         setUserAllowed(false);
       } else {
+        setLoading(false);
         navigate(PATH.USER_DASHBOARD);
       }
     } catch (error) {
-      alert(error.message);
+      setLoading(false);
+      setIsError(error.message);
     }
   };
   return (
@@ -75,6 +83,16 @@ const LoginInputForm = () => {
     >
       {() => (
         <Form>
+          {!userAllowed && (
+            <Alert severity="error" sx={{ mt: "1rem" }}>
+              User not Allowed, Please contact Admin.
+            </Alert>
+          )}
+          {isError && (
+            <Alert severity="error" sx={{ mt: "1rem" }}>
+              {isError}
+            </Alert>
+          )}
           <Box sx={{ ...style.form }}>
             <CustomTextField
               autoFocus
@@ -96,21 +114,6 @@ const LoginInputForm = () => {
               </Link>
             </Box>
             <Divider />
-            {!userAllowed && (
-              <Box
-                sx={{
-                  ...style.errorLogin,
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  color="error.main"
-                  fontWeight="bold"
-                >
-                  User not Allowed, Please contact Admin.
-                </Typography>
-              </Box>
-            )}
           </Box>
 
           <Box sx={{ ...style.loginActions }}>
@@ -119,14 +122,14 @@ const LoginInputForm = () => {
               label={<Typography variant="body2">Remember me</Typography>}
             />
             <Box>
-              <Button
-                variant="contained"
+              <CustomProgressButton
                 type="submit"
+                title="Login"
+                loading={loading}
+                style={style.loginBtn}
                 size="small"
-                sx={{ ...style.loginBtn }}
-              >
-                Login
-              </Button>
+                variant="contained"
+              />
             </Box>
           </Box>
         </Form>

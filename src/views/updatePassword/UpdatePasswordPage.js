@@ -5,6 +5,7 @@ import { supabase } from "supabase/supabase_client";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStyles } from "views/updatePassword/UpdatePasswordPage.style";
 import UpdatePasswordForm from "components/Forms/UpdatePasswordForm/UpdatePasswordForm";
+import STATUS from "utils/constants/status.constant";
 
 const UpdatePasswordPage = () => {
   const classes = useStyles();
@@ -21,6 +22,26 @@ const UpdatePasswordPage = () => {
     return params["#access_token"];
   };
 
+  const handleUpdatePassword = async (password, setLoading) => {
+    try {
+      setLoading(true);
+      const { user } = await supabase.auth.update({
+        password: password,
+        data: {
+          previousStatus: STATUS.registered,
+          currentStatus: STATUS.registered,
+        },
+      });
+      await supabase.from("Employees").insert({ user_id: user.id });
+      await supabase.from("Banking Info").insert({ user_id: user.id });
+      navigate(PATH.BASE_URL);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     if (location.hash) {
       const accessToken = getAcessToken(location.hash);
@@ -35,7 +56,6 @@ const UpdatePasswordPage = () => {
     } else if (!location.hash || location.hash.includes("error_code=401")) {
       navigate(PATH.BASE_URL);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -47,7 +67,7 @@ const UpdatePasswordPage = () => {
         will make this password available for you.
       </Typography>
       <div className={classes.inputForm}>
-        <UpdatePasswordForm />
+        <UpdatePasswordForm onSubmit={handleUpdatePassword} />
       </div>
     </div>
   );

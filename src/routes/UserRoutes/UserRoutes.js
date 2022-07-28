@@ -14,7 +14,9 @@ import UserProfilePage from "views/userProfile/UserProfilePage";
 import DashboardLayout from "layouts/dashboardLayout/DashboardLayout";
 import UpdatePasswordPage from "views/updatePassword/UpdatePasswordPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ResetPasswordPage from "views/resetPassword/ResetPasswordPage";
 import PasswordRecoveryPage from "views/passwordRecovery/PasswordRecoveryPage";
+import ConfirmationPage from "views/confirmation/ConfirmationPage";
 
 const UserRoutes = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ const UserRoutes = () => {
             id: user.id,
             email: user.email,
             role: user.user_metadata.role,
+            avatarURL: user.user_metadata.avatarURL,
             priority: user.user_metadata.priority,
             previousStatus: user.user_metadata.previousStatus,
             currentStatus: user.user_metadata.currentStatus,
@@ -82,6 +85,24 @@ const UserRoutes = () => {
           element={
             <LoginLayout>
               <UpdatePasswordPage />
+            </LoginLayout>
+          }
+        />
+
+        <Route
+          path={PATH.RESET_PASSWORD}
+          element={
+            <LoginLayout>
+              <ResetPasswordPage />
+            </LoginLayout>
+          }
+        />
+
+        <Route
+          path={PATH.CONFIRMATION}
+          element={
+            <LoginLayout>
+              <ConfirmationPage />
             </LoginLayout>
           }
         />

@@ -1,27 +1,34 @@
-import React from "react";
+import { Formik, Form } from "formik";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import DoneIcon from "@mui/icons-material/Done";
+import { supabase } from "supabase/supabase_client";
+import STATUS from "utils/constants/status.constant";
 import { useSelector, useDispatch } from "react-redux";
 import LOCATIONS from "utils/constants/locations.constant";
 import JOB_TITLES from "utils/constants/jobTitle.constant";
+import { updateCurrentUserStatus, getUserDetails } from "store";
 import TECHNICAL_STACK from "utils/constants/technicalStack.constant";
-import STATUS from "utils/constants/status.constant";
-import { Formik, Form } from "formik";
-import DoneIcon from "@mui/icons-material/Done";
-import { supabase } from "supabase/supabase_client";
-import { updateCurrentUserStatus } from "store";
-import { getUserDetails } from "store";
-import { Box, Button, Typography, Divider, Grid, Card } from "@mui/material";
 import CustomTextField from "components/CustomTextField/CustomTextField";
+import { userDetailPropType } from "utils/constants/prop-types.constant";
+import { Box, Typography, Divider, Grid, Card } from "@mui/material";
 import { userInformationSchema } from "utils/schemas/user_information_schema";
 import { style } from "components/Forms/UpdateUserProfileForm/UpdateUserProfileForm.style";
 import CustomSelectTextField from "components/CustomSelectTextField/CustomSelectTextField";
+import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
 
-const UpdateUserProfileForm = () => {
+const UpdateUserProfileForm = ({
+  userDetails,
+  setMessage,
+  handleOpenSnackBar,
+}) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.authReducer.user);
-  const userDetails = useSelector((state) => state.userReducer.userDetails);
 
   const submitHandler = async (values) => {
     try {
+      setLoading(true);
       const { data: userDetails } = await supabase
         .from("Employees")
         .update({
@@ -56,10 +63,12 @@ const UpdateUserProfileForm = () => {
       dispatch(updateCurrentUserStatus(data.user_metadata.currentStatus));
       const userInformation = { ...userDetails[0], ...userBankingDetails[0] };
       dispatch(getUserDetails(userInformation));
-
-      alert("updated details successfully", 2000);
+      setLoading(false);
+      setMessage("Updated User Details Successfully.");
+      handleOpenSnackBar();
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -204,14 +213,15 @@ const UpdateUserProfileForm = () => {
           <Divider />
 
           <Box sx={{ ...style.updateDetails }}>
-            <Button
-              variant="contained"
+            <CustomProgressButton
               type="submit"
-              startIcon={<DoneIcon />}
-              sx={{ ...style.saveBtn }}
-            >
-              Save Profile
-            </Button>
+              title="Save Profile"
+              loading={loading}
+              icon={<DoneIcon />}
+              style={style.saveBtn}
+              size="small"
+              variant="contained"
+            />
           </Box>
         </Form>
       )}
@@ -220,3 +230,8 @@ const UpdateUserProfileForm = () => {
 };
 
 export default UpdateUserProfileForm;
+UpdateUserProfileForm.propTypes = {
+  userDetails: userDetailPropType,
+  setMessage: PropTypes.func,
+  handleOpenSnackBar: PropTypes.func,
+};

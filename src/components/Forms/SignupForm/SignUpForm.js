@@ -1,5 +1,3 @@
-import { Form, Formik } from "formik";
-import React from "react";
 import {
   Divider,
   Typography,
@@ -7,22 +5,30 @@ import {
   FormControlLabel,
   Checkbox,
   Box,
-  Button,
 } from "@mui/material";
+import React, { useState } from "react";
+import { Form, Formik } from "formik";
 import { supabase } from "supabase/supabase_client";
 import { signup_schema } from "utils/schemas/signup_schema";
 import { style } from "components/Forms/SignupForm/SignUpForm.style";
 import CustomTextField from "components/CustomTextField/CustomTextField";
+import { useNavigate } from "react-router-dom";
+import PATH from "utils/constants/path.constant";
+import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
 
 const SignUpForm = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const initialValues = {
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   };
+
   const handleSubmit = async (values) => {
     try {
+      setLoading(true);
       const { error } = await supabase.auth.signUp(
         {
           email: values.email,
@@ -40,8 +46,10 @@ const SignUpForm = () => {
         }
       );
       if (error) throw error;
-      alert("Please Confirm Your Email.");
+      setLoading(false);
+      navigate(PATH.CONFIRMATION);
     } catch (error) {
+      setLoading(false);
       alert(error.message);
     } finally {
       values.name = "";
@@ -116,14 +124,14 @@ const SignUpForm = () => {
               />
             </Box>
             <Box sx={{ ...style.createAccountBtn }}>
-              <Button
-                variant="contained"
+              <CustomProgressButton
                 type="submit"
+                title="Create Account"
+                loading={loading}
+                style={style.loginBtn}
                 size="small"
-                sx={{ ...style.loginBtn }}
-              >
-                Create Account
-              </Button>
+                variant="contained"
+              />
             </Box>
           </Box>
         </Form>

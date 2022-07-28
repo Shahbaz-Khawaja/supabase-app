@@ -2,6 +2,7 @@ import {
   logOutUser,
   logInUser,
   updateCurrentUserStatus,
+  updateUserProfile,
   setLoading,
 } from "store/auth-slice/auth-slice";
 
@@ -26,4 +27,5 @@ export {
   updateCurrentUserStatus,
   updateUserStatusFromList,
   toggleTheme,
+  updateUserProfile,
 };

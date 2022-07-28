@@ -26,10 +26,6 @@ const lightTheme = createTheme({
       main: "#2571CB",
       light: "#E3ECF5",
     },
-    error: {
-      main: "#d32f2f",
-      light: "#ffe0e0",
-    },
   },
 });
 
@@ -40,10 +36,6 @@ const darkTheme = createTheme({
     primary: {
       main: "#2571CB",
       light: "#2D3F55",
-    },
-    error: {
-      main: "#d32f2f",
-      light: "#422b28",
     },
   },
 });

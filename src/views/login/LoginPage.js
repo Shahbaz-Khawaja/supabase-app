@@ -1,9 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import PATH from "utils/constants/path.constant";
 import { supabase } from "supabase/supabase_client";
+import { Link, useNavigate } from "react-router-dom";
 import { useStyles } from "views/login/LoginPage.style";
 import LoginInputForm from "components/Forms/LoginInputForm/LoginInputForm";
 
@@ -14,12 +14,15 @@ const LoginPage = () => {
 
   const updateStatus = async () => {
     try {
-      const { error } = await supabase.auth.update({
+      const { data: user, error } = await supabase.auth.update({
         data: {
           previousStatus: "Email Confirmed",
           currentStatus: "Email Confirmed",
         },
       });
+
+      await supabase.from("Candidate").insert({ user_id: user.id });
+
       if (error) throw error;
     } catch (error) {
       console.error(error);
@@ -37,7 +40,7 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    const accessToken = getAcessToken(location.hash);
+    let accessToken = getAcessToken(location.hash);
     if (location.hash) {
       supabase.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_IN" && accessToken === session.access_token) {
@@ -47,6 +50,8 @@ const LoginPage = () => {
     } else if (!location.hash || location.hash.includes("error_code=401")) {
       navigate(PATH.BASE_URL);
     }
+    return () => (accessToken = "");
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -13,10 +13,11 @@ import { useStyles, style } from "views/userDashboard/UserDashboard.style";
 const UserDashboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [deleteUserId, setDeleteUserId] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [openInviteDialog, setOpenInviteDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deletedUser, setDeletedUser] = useState(null);
+  const [resumeURL, setResumeURL] = useState("");
   const currentUser = useSelector((state) => state.authReducer.user);
   const allUsers = useSelector((state) => state.userReducer.allUsers);
 
@@ -51,8 +52,9 @@ const UserDashboard = () => {
     setOpenSnackBar(false);
   };
 
-  const handleOpenDeleteDialog = (id) => {
-    setDeleteUserId(id);
+  const handleOpenDeleteDialog = (user, resumeURL) => {
+    setDeletedUser(user);
+    setResumeURL(resumeURL);
     setOpenDeleteDialog(true);
   };
 
@@ -68,6 +70,7 @@ const UserDashboard = () => {
           id: user.id,
           email: user.email,
           role: user.user_metadata.role,
+          avatarURL: user.user_metadata.avatarURL,
           priority: user.user_metadata.priority,
           previousStatus: user.user_metadata.previousStatus,
           currentStatus: user.user_metadata.currentStatus,
@@ -124,7 +127,8 @@ const UserDashboard = () => {
         <UsersList handleOpenDeleteDialog={handleOpenDeleteDialog} />
       </div>
       <DeleteDialog
-        deleteUserId={deleteUserId}
+        deletedUser={deletedUser}
+        resumeURL={resumeURL}
         openDialog={openDeleteDialog}
         handleCloseDeleteDialog={handleCloseDeleteDialog}
       />

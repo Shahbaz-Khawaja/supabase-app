@@ -23,12 +23,12 @@ const InviteDialog = ({
       sx={{ ...style.dialog }}
     >
       <DialogTitle
-        variant="h3"
+        variant="h2"
         sx={{
           ...style.dialogHead,
         }}
       >
-        <Typography>Invite an Employee</Typography>
+        <Typography color="primary">Invite an Employee</Typography>
         <IconButton
           size="small"
           onClick={handleCloseDialog}

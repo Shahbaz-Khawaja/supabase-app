@@ -6,14 +6,16 @@ import SendIcon from "@mui/icons-material/Send";
 import ROLES from "utils/constants/roles.constant";
 import { supabase } from "supabase/supabase_client";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Divider, Box, Typography } from "@mui/material";
+import { Divider, Box, Alert } from "@mui/material";
 import { inviteUserSchema } from "utils/schemas/invite_user_schema";
 import CustomTextField from "components/CustomTextField/CustomTextField";
 import { style } from "components/Forms/InviteUserForm/InviteUserForm.style";
 import CustomSelectTextField from "components/CustomSelectTextField/CustomSelectTextField";
+import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
 
 const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
   const [emailExist, setEmailExist] = useState(false);
+  const [loading, setLoading] = useState(false);
   const initialValues = { email: "", selectRole: ROLES[0].role };
   const usersList = useSelector((state) => state.userReducer.allUsers);
   const users = usersList.map((user) => {
@@ -33,6 +35,7 @@ const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
 
     const handleUserInvite = async () => {
       try {
+        setLoading(true);
         const { data } = await supabase.functions.invoke("invite-user", {
           body: JSON.stringify({
             email: values.email,
@@ -47,12 +50,15 @@ const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
           previousStatus: data.user_metadata.previousStatus,
           currentStatus: data.user_metadata.currentStatus,
         };
-        handleOpenSnackBar();
         dispatch(inviteUser(userData));
+        setLoading(false);
+        handleOpenSnackBar();
       } catch (error) {
+        setLoading(false);
         console.error(error.message);
       } finally {
         handleCloseDialog();
+        setLoading(false);
       }
     };
 
@@ -88,28 +94,17 @@ const InviteUserForm = ({ handleCloseDialog, handleOpenSnackBar }) => {
             />
           </Box>
           <Divider />
-          {emailExist && (
-            <Box
-              sx={{
-                ...style.errorInvite,
-              }}
-            >
-              <Typography variant="body2" fontWeight="bold">
-                Email already Existed.
-              </Typography>
-            </Box>
-          )}
+          {emailExist && <Alert severity="error">Email already Existed.</Alert>}
 
           <Box sx={{ ...style.invite }}>
-            <Button
-              disabled={emailExist}
-              variant="contained"
+            <CustomProgressButton
               type="submit"
+              title="send Invite"
+              icon={<SendIcon />}
+              loading={loading}
               size="small"
-              endIcon={<SendIcon />}
-            >
-              send Invite
-            </Button>
+              variant="contained"
+            />
           </Box>
         </Form>
       )}

@@ -7,9 +7,9 @@ import { style } from "components/CustomTextField/CustomTextField.style";
 const CustomTextField = ({ label, name, ...otherProps }) => {
   const [field, meta] = useField(name);
   const configTextField = {
+    variant: "outlined",
     ...field,
     ...otherProps,
-    variant: "outlined",
     inputProps: { style: { ...style.textField } },
   };
   if (meta && meta.touched && meta.error) {

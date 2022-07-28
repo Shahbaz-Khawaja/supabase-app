@@ -7,6 +7,7 @@ const initialState = {
     email: "",
     role: "",
     priority: "",
+    avatarURL: "",
     previousStatus: "",
     currentStatus: "",
   },
@@ -22,6 +23,9 @@ export const authSlice = createSlice({
     updateCurrentUserStatus: (state, action) => {
       state.user.currentStatus = action.payload;
     },
+    updateUserProfile: (state, action) => {
+      state.user.avatarURL = action.payload;
+    },
     logOutUser: (state) => {
       state.user.id = "";
       state.user.email = "";
@@ -29,6 +33,7 @@ export const authSlice = createSlice({
       state.user.priority = "";
       state.user.previousStatus = "";
       state.user.currentStatus = "";
+      state.user.avatarURL = "";
     },
     setLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -36,6 +41,11 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logOutUser, logInUser, updateCurrentUserStatus, setLoading } =
-  authSlice.actions;
+export const {
+  logOutUser,
+  logInUser,
+  updateCurrentUserStatus,
+  updateUserProfile,
+  setLoading,
+} = authSlice.actions;
 export default authSlice.reducer;

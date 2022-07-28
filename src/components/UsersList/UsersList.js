@@ -11,6 +11,7 @@ import {
   CardMedia,
   IconButton,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import React from "react";
 import PropTypes from "prop-types";
@@ -27,6 +28,7 @@ import notFoundImg from "assets/notFound.png";
 import STATUS from "utils/constants/status.constant";
 import { supabase } from "supabase/supabase_client";
 import { updateUserStatusFromList } from "store";
+import { SUPABASE_STORAGE_URL } from "utils/constants/path.constant";
 
 const UsersList = ({ handleOpenDeleteDialog }) => {
   const navigate = useNavigate();
@@ -43,6 +45,15 @@ const UsersList = ({ handleOpenDeleteDialog }) => {
       }),
     });
     dispatch(updateUserStatusFromList({ id, status }));
+  };
+
+  const getUserResumeURL = async (id) => {
+    const { data, error } = await supabase
+      .from("Candidate")
+      .select("resume_url")
+      .match({ user_id: id });
+    if (error) throw error;
+    return data[0].resume_url;
   };
 
   const setColor = (status) => {
@@ -95,7 +106,24 @@ const UsersList = ({ handleOpenDeleteDialog }) => {
           <TableBody>
             {users?.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.6rem",
+                    }}
+                  >
+                    <Avatar
+                      src={
+                        user.avatarURL
+                          ? `${SUPABASE_STORAGE_URL}${user.avatarURL}`
+                          : null
+                      }
+                    />
+                    {user.email}
+                  </Box>
+                </TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <Typography
@@ -109,14 +137,26 @@ const UsersList = ({ handleOpenDeleteDialog }) => {
                 <TableCell>
                   {currentUser.role === "Admin" ? (
                     <Box sx={{ display: "flex", gap: "10px" }}>
-                      <Tooltip title="Delete">
-                        <IconButton
-                          size="large"
-                          onClick={() => handleOpenDeleteDialog(user.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                      {currentUser.id !== user.id && (
+                        <Tooltip title="Delete">
+                          <IconButton
+                            size="large"
+                            onClick={() => {
+                              if (user.role === "Candidate") {
+                                getUserResumeURL(user.id)
+                                  .then((value) => {
+                                    handleOpenDeleteDialog(user, value);
+                                  })
+                                  .catch((error) => console.error(error));
+                              } else {
+                                handleOpenDeleteDialog(user);
+                              }
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      )}
 
                       {user.currentStatus !== STATUS.invited &&
                         user.currentStatus !== STATUS.emailNotConfirmed && (
@@ -133,34 +173,36 @@ const UsersList = ({ handleOpenDeleteDialog }) => {
                               </IconButton>
                             </Tooltip>
 
-                            <Tooltip
-                              title={
-                                user.currentStatus === STATUS.deactivated
-                                  ? "Activate"
-                                  : "DeActivate"
-                              }
-                            >
-                              <IconButton
-                                size="large"
-                                onClick={() =>
+                            {currentUser.id !== user.id && (
+                              <Tooltip
+                                title={
                                   user.currentStatus === STATUS.deactivated
-                                    ? handleUpdateUserStatus(
-                                        user.id,
-                                        user.previousStatus
-                                      )
-                                    : handleUpdateUserStatus(
-                                        user.id,
-                                        STATUS.deactivated
-                                      )
+                                    ? "Activate"
+                                    : "DeActivate"
                                 }
                               >
-                                {user.currentStatus === STATUS.deactivated ? (
-                                  <ToggleOffIcon color="error" />
-                                ) : (
-                                  <ToggleOnIcon color="success" />
-                                )}
-                              </IconButton>
-                            </Tooltip>
+                                <IconButton
+                                  size="large"
+                                  onClick={() =>
+                                    user.currentStatus === STATUS.deactivated
+                                      ? handleUpdateUserStatus(
+                                          user.id,
+                                          user.previousStatus
+                                        )
+                                      : handleUpdateUserStatus(
+                                          user.id,
+                                          STATUS.deactivated
+                                        )
+                                  }
+                                >
+                                  {user.currentStatus === STATUS.deactivated ? (
+                                    <ToggleOffIcon color="error" />
+                                  ) : (
+                                    <ToggleOnIcon color="success" />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
+                            )}
                           </>
                         )}
                     </Box>

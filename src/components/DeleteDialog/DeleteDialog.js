@@ -14,32 +14,63 @@ import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { supabase } from "supabase/supabase_client";
 import { style } from "components/DeleteDialog/DeleteDialog.style";
+import { useState } from "react";
+import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
 
 const DeleteDialog = ({
-  deleteUserId,
+  deletedUser,
+  resumeURL,
   openDialog,
   handleCloseDeleteDialog,
 }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
   const handleDeleteUser = async () => {
     try {
-      await supabase
-        .from("Employees")
-        .delete()
-        .match({ user_id: deleteUserId });
-      await supabase
-        .from("Banking Info")
-        .delete()
-        .match({ user_id: deleteUserId });
+      setLoading(true);
+      if (deletedUser.avatarURL) {
+        const avatarURI = deletedUser.avatarURL.replace("avatars/", "");
+        const { error } = await supabase.storage
+          .from("avatars")
+          .remove([avatarURI]);
+        if (error) throw error;
+      }
+      if (deletedUser.role === "Candidate") {
+        if (resumeURL) {
+          const resumeURI = resumeURL.replace("resumes/", "");
+          const { error } = await supabase.storage
+            .from("resumes")
+            .remove([resumeURI]);
+          if (error) throw error;
+        }
+
+        await supabase
+          .from("Candidate")
+          .delete()
+          .match({ user_id: deletedUser.id });
+      } else {
+        await supabase
+          .from("Employees")
+          .delete()
+          .match({ user_id: deletedUser.id });
+        await supabase
+          .from("Banking Info")
+          .delete()
+          .match({ user_id: deletedUser.id });
+      }
+
       await supabase.functions.invoke("delete-user", {
         body: JSON.stringify({
-          id: deleteUserId,
+          id: deletedUser.id,
         }),
       });
-      dispatch(deleteUser(deleteUserId));
+      dispatch(deleteUser(deletedUser.id));
+      setLoading(false);
       handleCloseDeleteDialog();
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
   return (
@@ -50,9 +81,7 @@ const DeleteDialog = ({
           ...style.dialogHead,
         }}
       >
-        <Typography color="primary" fontWeight="bold">
-          Delete an Employee
-        </Typography>
+        <Typography color="primary">Delete an Employee</Typography>
         <IconButton
           size="small"
           onClick={handleCloseDeleteDialog}
@@ -79,15 +108,16 @@ const DeleteDialog = ({
         >
           Cancel
         </Button>
-        <Button
-          color="primary"
+        <CustomProgressButton
+          type="submit"
+          title="Delete"
+          loading={loading}
+          icon={<DoneIcon />}
+          style={style.actionBtn}
+          size="small"
           variant="contained"
-          startIcon={<DoneIcon />}
           onClick={handleDeleteUser}
-          sx={{ ...style.actionBtn }}
-        >
-          Delete
-        </Button>
+        />
       </DialogActions>
     </Dialog>
   );
@@ -95,7 +125,8 @@ const DeleteDialog = ({
 
 export default DeleteDialog;
 DeleteDialog.propTypes = {
-  deleteUserId: PropTypes.string,
+  deletedUser: PropTypes.object,
   openDialog: PropTypes.bool.isRequired,
+  resumeURL: PropTypes.string,
   handleCloseDeleteDialog: PropTypes.func,
 };

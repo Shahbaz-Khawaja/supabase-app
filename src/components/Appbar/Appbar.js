@@ -23,13 +23,13 @@ import PATH from "utils/constants/path.constant";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import profileImg from "assets/profile.jpg";
 import { toggleTheme } from "store";
+import { SUPABASE_STORAGE_URL } from "utils/constants/path.constant";
 
 const Appbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.authReducer.user);
+  const currentUser = useSelector((state) => state.authReducer.user);
   const lightTheme = useSelector((state) => state.toggleReducer.lightTheme);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -55,7 +55,7 @@ const Appbar = () => {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
       <Toolbar>
-        <Typography variant="h2">{user.role}</Typography>
+        <Typography variant="h2">{currentUser.role}</Typography>
         <div style={{ ...style.actions }}>
           <Tooltip title={lightTheme ? "Dark Mode" : "Light Mode"}>
             <IconButton size="large" onClick={() => dispatch(toggleTheme())}>
@@ -68,7 +68,12 @@ const Appbar = () => {
           </Tooltip>
 
           <Box onClick={handleClick} sx={{ ...style.row }}>
-            <Avatar src={profileImg} />
+            <Avatar
+              src={
+                currentUser?.avatarURL &&
+                `${SUPABASE_STORAGE_URL}${currentUser?.avatarURL}`
+              }
+            />
             <ArrowDropDownIcon />
           </Box>
 
@@ -91,7 +96,7 @@ const Appbar = () => {
               sx={{ ...style.menuItem }}
               onClick={() => {
                 handleClose();
-                navigate(`${PATH.USER_PROFILE}/${user.id}`);
+                navigate(`${PATH.USER_PROFILE}/${currentUser.id}`);
               }}
             >
               <Box sx={{ ...style.flex }}>

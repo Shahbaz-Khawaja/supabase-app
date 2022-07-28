@@ -25,6 +25,7 @@ serve(async (req) => {
       email_confirm: true,
       user_metadata: {
         role: "Admin",
+        avatarURL: "",
         priority: 5,
         previousStatus: "Registered",
         currentStatus: "Registered",
