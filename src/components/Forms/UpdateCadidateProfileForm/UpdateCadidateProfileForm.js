@@ -180,11 +180,12 @@ const UpdateCadidateProfileForm = ({ setMessage, handleOpenSnackBar }) => {
                       startIcon={<AddIcon />}
                       onClick={() => fileRef.current.click()}
                     >
+                      {!values.resume &&
+                        !userDetails.resume_url &&
+                        "choose File"}
                       {values.resume
                         ? "choose File"
-                        : userDetails.resume_url
-                        ? "choose different File"
-                        : "choose File"}
+                        : userDetails.resume_url && "choose different File"}
                     </Button>
                   </Box>
                   <ErrorMessage
