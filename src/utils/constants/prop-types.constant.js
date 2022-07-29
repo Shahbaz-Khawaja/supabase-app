@@ -17,3 +17,13 @@ export const userDetailPropType = PropTypes.shape({
   bank_account_name: PropTypes.string,
   bank_account_no: PropTypes.string,
 });
+
+export const viewedUserPropType = PropTypes.shape({
+  id: PropTypes.string,
+  email: PropTypes.string,
+  role: PropTypes.string,
+  priority: PropTypes.string,
+  previousStatus: PropTypes.string,
+  currentStatus: PropTypes.string,
+  avatarURL: PropTypes.string,
+});

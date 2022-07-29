@@ -16,6 +16,7 @@ import { supabase } from "supabase/supabase_client";
 import { style } from "components/DeleteDialog/DeleteDialog.style";
 import { useState } from "react";
 import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
+import { viewedUserPropType } from "utils/constants/prop-types.constant";
 
 const DeleteDialog = ({
   deletedUser,
@@ -125,7 +126,7 @@ const DeleteDialog = ({
 
 export default DeleteDialog;
 DeleteDialog.propTypes = {
-  deletedUser: PropTypes.object,
+  deletedUser: viewedUserPropType.isRequired,
   openDialog: PropTypes.bool.isRequired,
   resumeURL: PropTypes.string,
   handleCloseDeleteDialog: PropTypes.func,
