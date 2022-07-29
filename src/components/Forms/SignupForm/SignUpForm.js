@@ -15,6 +15,7 @@ import CustomTextField from "components/CustomTextField/CustomTextField";
 import { useNavigate } from "react-router-dom";
 import PATH from "utils/constants/path.constant";
 import CustomProgressButton from "components/CustomProgressButton/CustomProgressButton";
+import { NETLIFY_URL } from "utils/constants/path.constant";
 
 const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ const SignUpForm = () => {
             previousStatus: "Email not Confirmed",
             currentStatus: "Email not Confirmed",
           },
-          redirectTo: "http://localhost:3000/",
+          redirectTo: NETLIFY_URL,
         }
       );
       if (error) throw error;

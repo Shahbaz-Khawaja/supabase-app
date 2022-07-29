@@ -6,6 +6,8 @@ const UPDATE_PASSWORD = "/update_password";
 const PASSWORD_RECOVERY_URL = "/password_recovery";
 const RESET_PASSWORD = "/reset_password";
 const CONFIRMATION = "/confirmation";
+export const NETLIFY_URL = "https://shiny-sfogliatella-63245c.netlify.app";
+export const LOCALHOST = "http://localhost:3000";
 export const SUPABASE_STORAGE_URL =
   "https://hcvtpzazwdnmdoxrowja.supabase.co/storage/v1/object/public/";
 const PATH = {
